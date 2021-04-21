@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Fake Name Generator</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 50px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #050824;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #181d46;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #0cf4f4;
+      }
+      body {
+        background-image: url(https://i.imgur.com/MGwicTc.jpg);
+        padding: 50px 0;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      .details-information {
+        margin: 0 auto;
+        margin-top: 100px;
+        padding: 50px;
+        background-color: #050824;
+        width: 80%;
+        border-radius: 20px;
+        border: 2px solid #0cf4f4;
+      }
+      @media only screen and (max-width: 600px) {
+        .details-information {
+          width: 96%;
+        }
+      }
+      img#img {
+        border: 3px solid #0cf4f4;
+        margin-top: -122px;
+        border-radius: 100%;
+        margin-bottom: 30px;
+      }
+      h4 span {
+        color: rgb(230, 219, 219);
+        font-weight: 400;
+      }
+
+      h4 {
+        color: #0cf4f4;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      h2 {
+        color: #0cf4f4;
+        font-weight: 900;
+      }
+      h3 {
+        color: #fdfdfd;
+        font-weight: 700;
+      }
+      .title {
+        border-left: 5px solid;
+        padding-left: 1%;
+        margin-top: 25px;
+      }
+      h1 {
+        font-weight: 900;
+        color: white;
+      }
+    </style>
+  </head>
+  <body onload="details()">
+    <div class="container">
+      <h1 class="text-center text-white my-4">Fake profile Generator</h1>
+      <div class="container d-flex justify-content-center">
+        <button id="generateBtn" class="btn btn-primary">
+          Fake Name Generator
+        </button>
+      </div>
+      <div class="details-information">
+        <div class="d-flex justify-content-center">
+          <img id="img" src="" alt="" />
+        </div>
+        <h2 id="name" class="text-center"></h2>
+        <h3 class="title">Personal Details</h3>
+        <h4>Gender: <span id="gender"></span></h4>
+        <h4>Date Of Birth: <span id="birth-of-date"></span></h4>
+        <h4>Age: <span id="age"></span></h4>
+        <h4>Married status : <span id="married"></span></h4>
+        <h4>Marriage Date : <span id="marriageDate"></span></h4>
+        <h3 class="title">Contact</h3>
+        <h4>E-mail: <span id="email"></span></h4>
+        <h4>Phone: <span id="phone"></span></h4>
+        <h4>Cell No: <span id="cell"></span></h4>
+        <h3 class="title">Location</h3>
+        <h4>Country: <span id="country"></span></h4>
+        <h4>City: <span id="city"></span></h4>
+        <h4>State: <span id="state"></span></h4>
+        <h4>Street: <span id="street"></span></h4>
+        <h4>Post Code: <span id="psCode"></span></h4>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("generateBtn")
+        .addEventListener("click", function () {
+          details();
+        });
+      function details() {
+        fetch("https://randomuser.me/api/")
+          .then((res) => res.json())
+          .then((data) => {
+            detailsInfo(data);
+          });
+      }
+      function detailsInfo(data) {
+        const user = data.results[0];
+        const name = user.name;
+        const userName = `${name.title} ${name.first} ${name.last}`;
+        document.getElementById("name").innerText = userName;
+        const img = user.picture.large;
+        document.getElementById("img").setAttribute("src", img);
+        document.getElementById("gender").innerText = user.gender;
+        const birthOfDate = user.dob.date;
+        const newBirthDate = birthOfDate.slice(0, birthOfDate.length - 14);
+        document.getElementById("birth-of-date").innerText = newBirthDate;
+        document.getElementById("age").innerText = user.dob.age;
+        const marriage = user.registered.date;
+        const newMarriage = marriage.slice(0, marriage.length - 14);
+        document.getElementById("marriageDate").innerText =
+          user.registered.age + " " + "Years Married";
+        document.getElementById("married").innerText = newMarriage;
+        document.getElementById("email").innerText = user.email;
+        document.getElementById("phone").innerText = user.phone;
+        document.getElementById("cell").innerText = user.cell;
+        document.getElementById("country").innerText = user.location.country;
+        document.getElementById("city").innerText = user.location.city;
+        document.getElementById("state").innerText = user.location.state;
+        const street = user.location.street;
+        const newStreet = `${street.number} ${street.name}`;
+        document.getElementById("street").innerText = newStreet;
+        document.getElementById("psCode").innerText = user.location.postcode;
+      }
+    </script>
+  </body>
+</html>
